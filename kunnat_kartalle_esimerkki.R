@@ -1,12 +1,12 @@
-# Esimerkkiskripti kuntarajojen piirt‰misest‰ R:ll‰. 
+# Esimerkkiskripti kuntarajojen piirt√§misest√§ R:ll√§. 
 
 ## Maanmittauslaitoksen avoimet kuntakartat:
 # https://tiedostopalvelu.maanmittauslaitos.fi/tp/kartta --> Kuntajako. Tallennusmuoto ESRI shapefile.
-# Kartta pit‰‰ tilata ja se toimitetaan s‰hkˆpostilla.
+# Kartta pit√§√§ tilata ja se toimitetaan s√§hk√∂postilla.
 
 ## Paitulin kartat
 # https://avaa.tdata.fi/web/paituli/latauspalvelu --> Maanmittauslaitos --> Hallintorajat
-# tai https://avaa.tdata.fi/web/paituli/latauspalveluhallintorajat --> Hallintorajat, teemakartoille, ilman merialueita
+# tai https://avaa.tdata.fi/web/paituli/latauspalvelu --> Maanmittauslaitos -->Hallintorajat, teemakartoille, ilman merialueita
 
 ## Geoserverin kuntakartat (ilman merialueita)
 # http://geo.stat.fi/geoserver/web/wicket/bookmarkable/org.geoserver.web.demo.MapPreviewPage?1 --> esim. Kunnat 2020 (1:1 000 000), tallennus shapefile-muodossa.
@@ -14,7 +14,7 @@
 # 2019: http://geoserv.stat.fi:8080/geoserver/tilastointialueet/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tilastointialueet:kunta1000k_2019&maxFeatures=3500&outputFormat=SHAPE-ZIP
 # 2020: http://geoserv.stat.fi:8080/geoserver/tilastointialueet/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=tilastointialueet:kunta1000k_2020&maxFeatures=3500&outputFormat=SHAPE-ZIP
 
-# Kaikkien karttojen koordinaatit ETRS-TM35FIN -muodossa (lis‰tietoja esim. https://fi.wikipedia.org/wiki/ETRS-TM35FIN)
+# Kaikkien karttojen koordinaatit ETRS-TM35FIN -muodossa (lis√§tietoja esim. https://fi.wikipedia.org/wiki/ETRS-TM35FIN)
 
 # AR 13.2.2019 
 
@@ -31,7 +31,7 @@ kartta = read_sf("paituli/hallintorajat_milj_tk/2017/kunnat_2017_milj.shp")
 ggplot() + 
   geom_sf(data = kartta) 
 
-## Pisteit‰ kartalle: Tampere, Joensuu, Helsinki
+## Pisteit√§ kartalle: Tampere, Joensuu, Helsinki
 latitude  = c(327629, 641652, 385884) # E 
 longitude = c(6822513, 6944284, 6671746) # N
 ggplot() + 
@@ -40,7 +40,7 @@ ggplot() +
   geom_text(aes(x = latitude, y = longitude, label = c("Tampere", "Joensuu", "Helsinki")),hjust=0.5, vjust=-0.5)
 
 
-## Piirret‰‰n ainoastaan valitut kunnat
+## Piirret√§√§n ainoastaan valitut kunnat
 Kainuun.kartta = kartta %>% 
   filter(NATCODE %in%  c(205, 765,777,290, 620, 697,105,578 )) # Kainuun kuntien kuntanumerot
 ggplot() + 
@@ -59,11 +59,11 @@ ggplot() +
   geom_sf(data = kartta) +
   geom_sf(data = kartta.maakunta, fill = NA, size = 1, color ="black") # maakuntarajat
 
-## Luokan tai ryhm‰n mukaan v‰ritettyn‰
+## Luokan tai ryhm√§n mukaan v√§ritettyn√§
 # Tilastokeskuksen kuntaryhmitys
 kuntaryhmitys = read.csv("http://www.stat.fi/meta/luokitukset/kunta/001-2019/kunta_kr_teksti.txt", 
                          skip = 2, sep = "\t",  
-                         col.names=c("Kuntanumero", "Kunta", "Ryhm‰numero", "Kuntaryhmitys"),
+                         col.names=c("Kuntanumero", "Kunta", "Ryhm√§numero", "Kuntaryhmitys"),
                          colClasses=c("Kuntanumero"="character"))
 kartta.kuntaryhmityksella = left_join(kartta, kuntaryhmitys, by = c("NATCODE" = "Kuntanumero"))
 
