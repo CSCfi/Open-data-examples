@@ -16,7 +16,8 @@
 
 # Kaikkien karttojen koordinaatit ETRS-TM35FIN -muodossa (lisätietoja esim. https://fi.wikipedia.org/wiki/ETRS-TM35FIN)
 
-# AR 13.2.2019 
+# AR 13.2.2019
+# MP 26.2.2020
 
 #rm(list = ls())
 library(sf)
@@ -24,8 +25,24 @@ library(ggplot2)
 library(dplyr)
 
 # Esimerkki Maanmittauslaitoksen tai Paitulin kartalla
-#kartta = read_sf("mml/SuomenKuntajako_2019_250k.shp") # huom. shp-tiedosto vaatii kaverikseen mm. shx-tiedoston
-kartta = read_sf("paituli/hallintorajat_milj_tk/2017/kunnat_2017_milj.shp")
+
+## Ladataan tarvittavat aineistot. 
+
+### SHP eli shapefile. Päätiedosto, jonka päälle kaikki rakentuu, kertoo muodot.
+download.file(url = 'http://www.nic.funet.fi/index/geodata/mml/hallintorajat_milj_tk/2017/kunnat_2017_milj.shp', 
+              destfile = 'kunnat_2017_milj.shp')
+
+### DPF eli dBASE table file. Kertoo "muotojen" ominaisuuksia, kuten nimi yms.
+download.file(url = 'http://www.nic.funet.fi/index/geodata/mml/hallintorajat_milj_tk/2017/kunnat_2017_milj.dbf', 
+              destfile = 'kunnat_2017_milj.dbf')
+
+### SHX eli spatial index file. 
+download.file(url = 'http://www.nic.funet.fi/index/geodata/mml/hallintorajat_milj_tk/2017/kunnat_2017_milj.shx', 
+              destfile = 'kunnat_2017_milj.shx')
+
+
+# huom. shp-tiedosto vaatii kaverikseen shx- ja dpf tiedoston samaan kansioon.
+kartta = read_sf("kunnat_2017_milj.shp") # Voit myös osoittaa valmiiksi lataamaasi tiedoston sijaintiin tässä
 
 ## Kaikki Suomen kunnat kartalle
 ggplot() + 
@@ -53,8 +70,18 @@ ggplot() +
   coord_sf(xlim = c(470000,674000), ylim = c(7050000,7260000)) 
 
 ## Maakuntarajat vahvistettuna
-#kartta.maakunta = read_sf("mml/SuomenMaakuntajako_2019_250k.shp") # MML:n maakuntajako
-kartta.maakunta = read_sf("paituli/hallintorajat_milj_tk/2017/maakunnat_2017_milj.shp") #Paitulin maakuntajako ilman merialueita
+### Ladataan tarvittavat maakunta aineistot paitulista 
+download.file(url = 'http://www.nic.funet.fi/index/geodata/mml/hallintorajat_milj_tk/2017/maakunnat_2017_milj.dbf', 
+              destfile = 'maakunnat_2017_milj.dbf')
+
+download.file(url = 'http://www.nic.funet.fi/index/geodata/mml/hallintorajat_milj_tk/2017/maakunnat_2017_milj.shp', 
+              destfile = 'maakunnat_2017_milj.shp')
+
+download.file(url = 'http://www.nic.funet.fi/index/geodata/mml/hallintorajat_milj_tk/2017/maakunnat_2017_milj.shx', 
+              destfile = 'maakunnat_2017_milj.shx')
+
+# huom. shp-tiedosto vaatii kaverikseen shx- ja dpf tiedoston samaan kansioon.
+kartta.maakunta = read_sf("maakunnat_2017_milj.shp") #Paitulin maakuntajako ilman merialueita
 ggplot() + 
   geom_sf(data = kartta) +
   geom_sf(data = kartta.maakunta, fill = NA, size = 1, color ="black") # maakuntarajat
