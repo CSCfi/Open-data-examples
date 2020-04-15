@@ -2,7 +2,7 @@
 # Rajapinnan kuvaus ja lisätietoja: 
 # https://thl.fi/fi/tilastot-ja-data/aineistot-ja-palvelut/avoin-data/varmistetut-koronatapaukset-suomessa-covid-19-
 
-# aino.ropponen(a)csc.fi
+# AR 4/2020
 
 #rm(list=ls())
 library(rjstat)
